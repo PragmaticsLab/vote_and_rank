@@ -1,0 +1,9 @@
+model_name,anti_crows_score,stereoset_intra_icat,stereoset_inter_icat,winogender_acc_difference,winobias_acc_difference
+distilbert-base-uncased,0.4098,0.6998,0.7528,0.9917,0.9981
+bert-base-uncased,0.4138,0.7279,0.6700,0.9875,0.9552
+roberta-base,0.3773,0.6750,0.3995,0.9708,0.9609
+albert-base-v2,0.4410,0.6901,0.7770,0.9958,0.9924
+deberta-base,0.5159,0.4248,0.4035,0.9917,0.9867
+t5-base,0.3753,0.7034,0.5789,0.9667,0.9836
+gpt2,0.4317,0.6975,0.6490,0.9958,0.9255
+distilroberta-base,0.3687,0.6833,0.6247,0.9958,0.9861
