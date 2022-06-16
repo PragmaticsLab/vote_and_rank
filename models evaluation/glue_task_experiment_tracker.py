@@ -64,6 +64,8 @@ def main():
 
     parser_args = parser.parse_args()
 
+    print(vars(parser_args))
+
     task = parser_args.task_name
     model_name = parser_args.model_name
     batch_size = parser_args.batch_size
