@@ -32,7 +32,17 @@ The leaderboard results by the access date and CS4 experiment results can be fou
 
 
 ### Usage examples
-There are a few examples of running the CS4 experiments:
+Conda environment.
+
+
+```
+conda install transformers datasets scipy scikit-learn sentencepiece -c conda-forge
+conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
+conda install -c anaconda cudnn=8.2.1
+pip install git+https://github.com/Breakend/experiment-impact-tracker
+```
+
+There are a few examples of running the CS4 experiments.
 1. Downstream performance evaluation.
 
 
