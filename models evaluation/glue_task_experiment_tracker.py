@@ -64,8 +64,6 @@ def main():
 
     parser_args = parser.parse_args()
 
-    print(vars(parser_args))
-
     task = parser_args.task_name
     model_name = parser_args.model_name
     batch_size = parser_args.batch_size
@@ -80,7 +78,15 @@ def main():
             "model": BertForSequenceClassification,
             "tokenizer": BertTokenizer,
         },
+        "bert-large-uncased": {
+            "model": BertForSequenceClassification,
+            "tokenizer": BertTokenizer,
+        },
         "roberta-base": {
+            "model": RobertaForSequenceClassification,
+            "tokenizer": RobertaTokenizer,
+        },
+        "roberta-large": {
             "model": RobertaForSequenceClassification,
             "tokenizer": RobertaTokenizer,
         },
@@ -98,6 +104,10 @@ def main():
         },
         "t5-base": {"model": T5ForConditionalGeneration, "tokenizer": T5Tokenizer},
         "deberta-base": {
+            "model": DebertaForSequenceClassification,
+            "tokenizer": DebertaTokenizer,
+        },
+        "deberta-large": {
             "model": DebertaForSequenceClassification,
             "tokenizer": DebertaTokenizer,
         },
@@ -145,12 +155,6 @@ def main():
 
     encoded_dataset = dataset.map(preprocess_function, batched=True)
 
-    def model_init():
-        num_labels = 3 if task.startswith("mnli") else 1 if task == "stsb" else 2
-        return name_to_model[model_name]["model"].from_pretrained(
-            "models/{}/{}".format(model_name, num_labels), num_labels=num_labels
-        )
-
     metric_name = (
         "pearson"
         if task == "stsb"
@@ -185,6 +189,12 @@ def main():
         elif model_name != "deberta-base":
             predictions = predictions[:, 0]
         return metric.compute(predictions=predictions, references=labels)
+
+    def model_init():
+        num_labels = 3 if task.startswith("mnli") else 1 if task == "stsb" else 2
+        return name_to_model[model_name]["model"].from_pretrained(
+            "models/{}/{}".format(model_name, num_labels), num_labels=num_labels
+        )
 
     validation_key = (
         "validation_mismatched"
