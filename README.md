@@ -29,3 +29,16 @@ CS1-CS3 are conducted on the publicly available benchmark leaderboards, while CS
 
 ### Data and other materials
 The leaderboard results by the access date and CS4 experiment results can be found [here](https://github.com/PragmaticsLab/vote_and_rank/tree/main/tables). 
+
+
+### Usage examples
+There are a few examples of running the CS4 experiments:
+1. Downstream performance evaluation.
+
+
+```python glue_task.py --model_name="bert-base-uncased" --task_name="wnli" --random_seed=0```
+
+2. Experiment tracker evaluation.
+
+
+```python glue_task_experiment_tracker.py --model_name="bert-base-uncased" --task_name="wnli" --random_seed=0```
