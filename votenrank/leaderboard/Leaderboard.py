@@ -84,7 +84,7 @@ class Leaderboard:
             self.ranks = self.ranks.astype(int)
             self.max_ranks = self.max_ranks.astype(int)
 
-    def elect_all(self, use_methods: List[str] = None):
+    def elect_all(self, use_methods: List[str] = None, drop_mean=False):
         result = []
 
         if use_methods is not None:
@@ -98,6 +98,9 @@ class Leaderboard:
             methods_to_choose = set(methods_to_choose).intersection(
                 set(PARTIAL_METHODS)
             )
+
+        if drop_mean:
+            methods_to_choose = set(methods_to_choose) - {"mean"}
 
         for method in methods_to_choose:
             func = eval(f"self.{method}_election")
@@ -122,6 +125,7 @@ class Leaderboard:
         group_weights=None,
         insert_nan=True,
         use_methods: List[str] = None,
+        drop_mean=False
     ):
         result = []
 
@@ -136,6 +140,9 @@ class Leaderboard:
             methods_to_choose = set(methods_to_choose).intersection(
                 set(PARTIAL_METHODS)
             )
+
+        if drop_mean:
+            methods_to_choose = set(methods_to_choose) - {"mean"}
 
         result = pd.DataFrame()
         for method in methods_to_choose:
