@@ -32,8 +32,8 @@ def agreement_rate(df, k, top_k=True):
     }
 
 
-def tracker_filename(model, task):
-    return f"../hpc_task/experiment_tracker/experiment_tracker_results/{model}_{task}_0/"
+def tracker_filename(model, task, dirpath):
+    return f"{dirpath}/{model}_{task}_0/"
 
 
 def get_tracker_table(data, dirpath):
@@ -53,7 +53,7 @@ def get_tracker_table(data, dirpath):
             continue
 
             
-        fname = tracker_filename(model, task)
+        fname = tracker_filename(model, task, dirpath)
         datain = DataInterface([fname + "impacttracker"])
         info = load_initial_info(fname)
         add_info = gather_additional_info(info, fname)
