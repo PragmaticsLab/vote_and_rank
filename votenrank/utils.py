@@ -7,6 +7,7 @@ from experiment_impact_tracker.data_interface import DataInterface
 from experiment_impact_tracker.data_utils import load_initial_info
 from experiment_impact_tracker.utils import gather_additional_info
 
+
 def ranking2top(ranking):
     return ranking[ranking == ranking.max()].index.tolist()
 
@@ -17,7 +18,9 @@ def kendall_tau(df):
         res_d[method] = subset.apply(lambda x: x.split(":")[1].strip()).tolist()
 
     return {
-        method: round(stats.kendalltau(res_d["AM"], method_top_k)[0], 3) for method, method_top_k in res_d.items() if method != "AM"
+        method: round(stats.kendalltau(res_d["AM"], method_top_k)[0], 3)
+        for method, method_top_k in res_d.items()
+        if method != "AM"
     }
 
 
@@ -28,7 +31,9 @@ def agreement_rate(df, k, top_k=True):
         res_d[method] = _subset.apply(lambda x: x.split(":")[1].strip()).tolist()
 
     return {
-        method: round(len(set(method_top_k).intersection(set(res_d["AM"]))) / k, 2) for method, method_top_k in res_d.items() if method != "AM"
+        method: round(len(set(method_top_k).intersection(set(res_d["AM"]))) / k, 2)
+        for method, method_top_k in res_d.items()
+        if method != "AM"
     }
 
 
@@ -42,7 +47,9 @@ def get_tracker_table(data, dirpath):
 
     tracker_cols = []
     for task in data.columns:
-        tracker_cols += [task.split(".")[0] + "_" + attr for attr in di_attrs + info_attrs]
+        tracker_cols += [
+            task.split(".")[0] + "_" + attr for attr in di_attrs + info_attrs
+        ]
 
     tracker_cols = list(set(tracker_cols))
     tracker_res = pd.DataFrame(columns=tracker_cols, index=data.index)
@@ -52,15 +59,14 @@ def get_tracker_table(data, dirpath):
         if model not in data.index:
             continue
 
-            
         fname = tracker_filename(model, task, dirpath)
         datain = DataInterface([fname + "impacttracker"])
         info = load_initial_info(fname)
         add_info = gather_additional_info(info, fname)
-        
+
         for attr in di_attrs:
             tracker_res.loc[model, f"{task}_{attr}"] = getattr(datain, attr)
         for attr in info_attrs:
             tracker_res.loc[model, f"{task}_{attr}"] = add_info[attr]
-    
+
     return tracker_res

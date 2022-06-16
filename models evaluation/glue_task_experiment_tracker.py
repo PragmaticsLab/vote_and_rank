@@ -1,14 +1,28 @@
 from datasets import load_metric, load_from_disk
 from transformers import TrainingArguments, Trainer
-from transformers import DistilBertTokenizer, BertTokenizer, RobertaTokenizer, AlbertTokenizer,\
-T5Tokenizer, DebertaTokenizer, GPT2Tokenizer
-from transformers import DistilBertForSequenceClassification, BertForSequenceClassification,\
-RobertaForSequenceClassification, AlbertForSequenceClassification, T5ForConditionalGeneration,\
-DebertaForSequenceClassification, GPT2ForSequenceClassification
+from transformers import (
+    DistilBertTokenizer,
+    BertTokenizer,
+    RobertaTokenizer,
+    AlbertTokenizer,
+    T5Tokenizer,
+    DebertaTokenizer,
+    GPT2Tokenizer,
+)
+from transformers import (
+    DistilBertForSequenceClassification,
+    BertForSequenceClassification,
+    RobertaForSequenceClassification,
+    AlbertForSequenceClassification,
+    T5ForConditionalGeneration,
+    DebertaForSequenceClassification,
+    GPT2ForSequenceClassification,
+)
 import numpy as np
 import os
 import argparse
 from experiment_impact_tracker.compute_tracker import ImpactTracker
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -19,7 +33,7 @@ def main():
         type=str,
         required=False,
     )
-    
+
     parser.add_argument(
         "--model_name",
         default="distilbert-base-uncased",
@@ -33,14 +47,14 @@ def main():
         type=int,
         required=False,
     )
-    
+
     parser.add_argument(
         "--num_train_epochs",
         default=5,
         type=int,
         required=False,
     )
-    
+
     parser.add_argument(
         "--random_seed",
         default=0,
@@ -60,51 +74,47 @@ def main():
     name_to_model = {
         "distilbert-base-uncased": {
             "model": DistilBertForSequenceClassification,
-            "tokenizer": DistilBertTokenizer
+            "tokenizer": DistilBertTokenizer,
         },
         "bert-base-uncased": {
             "model": BertForSequenceClassification,
-            "tokenizer": BertTokenizer
+            "tokenizer": BertTokenizer,
         },
         "roberta-base": {
             "model": RobertaForSequenceClassification,
-            "tokenizer": RobertaTokenizer
+            "tokenizer": RobertaTokenizer,
         },
         "distilroberta-base": {
             "model": RobertaForSequenceClassification,
-            "tokenizer": RobertaTokenizer
+            "tokenizer": RobertaTokenizer,
         },
         "albert-base-v2": {
             "model": AlbertForSequenceClassification,
-            "tokenizer": AlbertTokenizer
+            "tokenizer": AlbertTokenizer,
         },
         "albert-xxlarge-v2": {
             "model": AlbertForSequenceClassification,
-            "tokenizer": AlbertTokenizer
+            "tokenizer": AlbertTokenizer,
         },
-        "t5-base": {
-            "model": T5ForConditionalGeneration,
-            "tokenizer": T5Tokenizer
-        },
+        "t5-base": {"model": T5ForConditionalGeneration, "tokenizer": T5Tokenizer},
         "deberta-base": {
             "model": DebertaForSequenceClassification,
-            "tokenizer": DebertaTokenizer
+            "tokenizer": DebertaTokenizer,
         },
-        "gpt2": {
-            "model": GPT2ForSequenceClassification,
-            "tokenizer": GPT2Tokenizer
-        },
+        "gpt2": {"model": GPT2ForSequenceClassification, "tokenizer": GPT2Tokenizer},
         "distilgpt2": {
             "model": GPT2ForSequenceClassification,
-            "tokenizer": GPT2Tokenizer
+            "tokenizer": GPT2Tokenizer,
         },
     }
 
-    is_t5 = (model_name[:2] == 't5')
+    is_t5 = model_name[:2] == "t5"
     actual_task = "mnli" if task == "mnli-mm" else task
     dataset = load_from_disk("datasets/glue/{}".format(actual_task))
     metric = load_metric("metrics/glue", actual_task)
-    tokenizer = name_to_model[model_name]["tokenizer"].from_pretrained("tokenizers/{}".format(model_name), model_max_length=512)
+    tokenizer = name_to_model[model_name]["tokenizer"].from_pretrained(
+        "tokenizers/{}".format(model_name), model_max_length=512
+    )
 
     task_to_keys = {
         "cola": ("sentence", None),
@@ -123,23 +133,36 @@ def main():
 
     def preprocess_function(examples):
         if is_t5:
-            examples['label'] = [[i] for i in examples['label']]
+            examples["label"] = [[i] for i in examples["label"]]
         if sentence2_key is None:
             return tokenizer(examples[sentence1_key], padding=True, truncation=True)
-        return tokenizer(examples[sentence1_key], examples[sentence2_key], padding=True, truncation=True)
+        return tokenizer(
+            examples[sentence1_key],
+            examples[sentence2_key],
+            padding=True,
+            truncation=True,
+        )
 
     encoded_dataset = dataset.map(preprocess_function, batched=True)
 
     def model_init():
-        num_labels = 3 if task.startswith("mnli") else 1 if task=="stsb" else 2
-        return name_to_model[model_name]["model"].from_pretrained("models/{}/{}".format(model_name, num_labels), num_labels=num_labels)
+        num_labels = 3 if task.startswith("mnli") else 1 if task == "stsb" else 2
+        return name_to_model[model_name]["model"].from_pretrained(
+            "models/{}/{}".format(model_name, num_labels), num_labels=num_labels
+        )
 
-    metric_name = "pearson" if task == "stsb" else "matthews_correlation" if task == "cola" else "accuracy"
+    metric_name = (
+        "pearson"
+        if task == "stsb"
+        else "matthews_correlation"
+        if task == "cola"
+        else "accuracy"
+    )
 
     args = TrainingArguments(
-        output_dir=f'saved_models/{model_name}/{parser_args.task_name}/{parser_args.random_seed}',
-        evaluation_strategy = "epoch",
-        save_strategy = "no",
+        output_dir=f"saved_models/{model_name}/{parser_args.task_name}/{parser_args.random_seed}",
+        evaluation_strategy="epoch",
+        save_strategy="no",
         learning_rate=2e-5,
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
@@ -153,15 +176,23 @@ def main():
     def compute_metrics(eval_pred):
         predictions, labels = eval_pred
         if is_t5:
-            predictions = np.array(predictions[0]).reshape([predictions[0].shape[0], predictions[0].shape[2]])
+            predictions = np.array(predictions[0]).reshape(
+                [predictions[0].shape[0], predictions[0].shape[2]]
+            )
             labels = labels.reshape([len(labels)])
         if task != "stsb":
             predictions = np.argmax(predictions, axis=1)
-        elif model_name != 'deberta-base':
+        elif model_name != "deberta-base":
             predictions = predictions[:, 0]
         return metric.compute(predictions=predictions, references=labels)
 
-    validation_key = "validation_mismatched" if task == "mnli-mm" else "validation_matched" if task == "mnli" else "validation"
+    validation_key = (
+        "validation_mismatched"
+        if task == "mnli-mm"
+        else "validation_matched"
+        if task == "mnli"
+        else "validation"
+    )
 
     trainer = Trainer(
         model_init=model_init,
@@ -169,10 +200,10 @@ def main():
         train_dataset=encoded_dataset["train"],
         eval_dataset=encoded_dataset[validation_key],
         tokenizer=tokenizer,
-        compute_metrics=compute_metrics
+        compute_metrics=compute_metrics,
     )
 
-    experiment_tracker_results_dir = f'experiment_tracker_results/{model_name}_{parser_args.task_name}_{parser_args.random_seed}'
+    experiment_tracker_results_dir = f"experiment_tracker_results/{model_name}_{parser_args.task_name}_{parser_args.random_seed}"
     if not os.path.exists(experiment_tracker_results_dir):
         os.makedirs(experiment_tracker_results_dir)
 
@@ -181,6 +212,7 @@ def main():
     tracker.launch_impact_monitor()
 
     trainer.train()
+
 
 if __name__ == "__main__":
     main()

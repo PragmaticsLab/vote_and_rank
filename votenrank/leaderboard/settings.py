@@ -1,25 +1,23 @@
-RANKING_METHODS = [
-    "mean", "plurality", "borda", "dowdall", "copeland", "minimax"
-]
+RANKING_METHODS = ["mean", "plurality", "borda", "dowdall", "copeland", "minimax"]
 
 ELECTION_METHODS = [
-    "mean", "plurality", "borda", "dowdall", "copeland", "minimax", "threshold", "baldwin", "condorcet"
+    "mean",
+    "plurality",
+    "borda",
+    "dowdall",
+    "copeland",
+    "minimax",
+    "threshold",
+    "baldwin",
+    "condorcet",
 ]
 
-PARTIAL_METHODS = [
-    "condorcet", "copeland", "minimax", "mean"
-]
+PARTIAL_METHODS = ["condorcet", "copeland", "minimax", "mean"]
 
 METHODS_SETTINGS = {
-    "mean": {
-        "mean_type": ["arithmetic", "geometric"]
-    },
-    "copeland": {
-        "slice_type": ["difference"]
-    },
-    "minimax": {
-        "score_type": ["winning_votes"]
-    },
+    "mean": {"mean_type": ["arithmetic", "geometric"]},
+    "copeland": {"slice_type": ["difference"]},
+    "minimax": {"score_type": ["winning_votes"]},
 }
 
 PRETTY_NAMES = {
