@@ -52,3 +52,6 @@ There are a few examples of running the CS4 experiments.
 
 
 ```python glue_task_experiment_tracker.py --model_name="bert-base-uncased" --task_name="wnli" --random_seed=0```
+
+### License
+The codebase and experiment materials are available under the Apache 2.0 license. The copyright of the leaderboard results remains with the original authors and benchmark holders.
