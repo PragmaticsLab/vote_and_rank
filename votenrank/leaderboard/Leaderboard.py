@@ -125,7 +125,8 @@ class Leaderboard:
         group_weights=None,
         insert_nan=True,
         use_methods: List[str] = None,
-        drop_mean=False
+        drop_mean=False,
+        return_tie_numbers=False
     ):
         result = []
 
@@ -143,6 +144,8 @@ class Leaderboard:
 
         if drop_mean:
             methods_to_choose = set(methods_to_choose) - {"mean"}
+
+        tie_numbers = {}
 
         result = pd.DataFrame()
         for method in methods_to_choose:
@@ -164,6 +167,8 @@ class Leaderboard:
                         ranking.apply(lambda x: f"{x:.2f}: ") + ranking.index
                     ).values
                     result[f"Method: {method}, Params: {some_params}"] = to_print
+
+                    tie_numbers[method] = ranking.shape[0] - ranking.nunique()
             else:
                 if task_groups is None:
                     ranking = func()
@@ -178,10 +183,15 @@ class Leaderboard:
                     ranking.apply(lambda x: f"{x:.2f}: ") + ranking.index
                 ).values
                 result[f"Method: {method}, Params: {{}}"] = to_print
+                tie_numbers[method] = ranking.shape[0] - ranking.nunique()
 
         result_df = pd.DataFrame(result).rename(columns=PRETTY_NAMES)
         result_df.index = pd.Series(result_df.index + 1, name="Ranking position")
-        return result_df
+
+        if not return_tie_numbers:
+            return result_df
+        else:
+            return result_df, tie_numbers
 
     def get_meta_leaderboard(
         self,
