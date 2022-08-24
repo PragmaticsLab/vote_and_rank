@@ -1,4 +1,4 @@
-RANKING_METHODS = ["mean", "plurality", "borda", "dowdall", "copeland", "minimax"]
+RANKING_METHODS = ["mean", "plurality", "borda", "dowdall", "copeland", "minimax", "optimality_gap"]
 
 ELECTION_METHODS = [
     "mean",
@@ -10,6 +10,7 @@ ELECTION_METHODS = [
     "threshold",
     "baldwin",
     "condorcet",
+    "optimality_gap",
 ]
 
 PARTIAL_METHODS = ["condorcet", "copeland", "minimax", "mean"]
@@ -18,6 +19,7 @@ METHODS_SETTINGS = {
     "mean": {"mean_type": ["arithmetic", "geometric"]},
     "copeland": {"slice_type": ["difference"]},
     "minimax": {"score_type": ["winning_votes"]},
+    "optimality_gap": {"gamma": [95]}
 }
 
 PRETTY_NAMES = {
@@ -31,4 +33,5 @@ PRETTY_NAMES = {
     "Method: threshold, Params: {}": "Threshold",
     "Method: baldwin, Params: {}": "Baldwin",
     "Method: condorcet, Params: {}": "Condorcet",
+    "Method: optimality_gap, Params: {'gamma': 95}": "OG",
 }

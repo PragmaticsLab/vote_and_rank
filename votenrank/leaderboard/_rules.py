@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 from scipy.stats import gmean
 
@@ -159,3 +160,13 @@ def minimax_ranking(self, score_type: str = "winning_votes"):
 
 def minimax_election(self, score_type: str = "winning_votes"):
     return ranking2top(self.minimax_ranking(score_type))
+
+
+def optimality_gap_ranking(self, gamma: int):
+    gap_scores_np = np.minimum(self.table, gamma) - gamma
+    gap_scores = pd.DataFrame(index=self.table.index, columns=self.table.columns, data=gap_scores_np)
+    return gap_scores.mean(axis=1).sort_values(ascending=False)
+
+
+def optimality_gap_election(self, gamma: int):
+    return ranking2top(self.optimality_gap_ranking(gamma))

@@ -33,6 +33,8 @@ class Leaderboard:
         copeland_election,
         minimax_ranking,
         minimax_election,
+        optimality_gap_ranking,
+        optimality_gap_election,
         _approval_ranking,
     )
     from ._cw import _get_tasks_onehot, _find_weights_for_majority_graph
@@ -107,15 +109,18 @@ class Leaderboard:
             if method in settings_dict:
                 params = ParameterGrid(METHODS_SETTINGS[method])
                 for some_params in params:
+                    election_result = func(**some_params)
                     result.append(
                         (
                             f"Method: {method}, Params: {some_params}",
-                            func(**some_params),
+                            election_result,
+                            len(election_result)
                         )
                     )
             else:
-                result.append((f"Method: {method}, Params: {{}}", func()))
-        final = pd.DataFrame(result, columns=["method", "winners"])
+                election_result = func()
+                result.append((f"Method: {method}, Params: {{}}", election_result, len(election_result)))
+        final = pd.DataFrame(result, columns=["method", "winners", "n_winners"])
         final["method"].replace(PRETTY_NAMES, inplace=True)
         return final
 
@@ -168,7 +173,7 @@ class Leaderboard:
                     ).values
                     result[f"Method: {method}, Params: {some_params}"] = to_print
 
-                    tie_numbers[method] = ranking.shape[0] - ranking.nunique()
+                    tie_numbers[f"Method: {method}, Params: {some_params}"] = ranking.shape[0] - ranking.nunique()
             else:
                 if task_groups is None:
                     ranking = func()
@@ -183,10 +188,11 @@ class Leaderboard:
                     ranking.apply(lambda x: f"{x:.2f}: ") + ranking.index
                 ).values
                 result[f"Method: {method}, Params: {{}}"] = to_print
-                tie_numbers[method] = ranking.shape[0] - ranking.nunique()
+                tie_numbers[f"Method: {method}, Params: {{}}"] = ranking.shape[0] - ranking.nunique()
 
         result_df = pd.DataFrame(result).rename(columns=PRETTY_NAMES)
         result_df.index = pd.Series(result_df.index + 1, name="Ranking position")
+        tie_numbers = {PRETTY_NAMES[key]: value for key, value in tie_numbers.items()}
 
         if not return_tie_numbers:
             return result_df

@@ -33,6 +33,7 @@ def compute_iia(method, table, weights, num_repetitions):
     results = []
     for i in trange(num_repetitions, leave=False):
         models_order = table.index.tolist()
+        np.random.seed(i)
         np.random.shuffle(models_order)
         results.append(compute_iia_for_fixed_models(method, table, models_order, weights))
-    return sum(results) / num_repetitions, results
+    return np.mean(results), np.std(results), results
