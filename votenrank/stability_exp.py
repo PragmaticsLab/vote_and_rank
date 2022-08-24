@@ -43,6 +43,7 @@ def spearman_exp(lb, num_repeats, exp_range, top_k=7):
                             "mean": {"mean_type": ["arithmetic"]},
                             "minimax": {"score_type": ["winning_votes"]},
                             "copeland": {"slice_type": ["difference"]},
+                            "optimality_gap": {"gamma": [95]}
                         }
                     )
                 )
@@ -111,6 +112,7 @@ def get_res_df(exp_range, exp_res):
 def create_exp_pic(exp_range, exp_res, filename=None):
     df = get_res_df(exp_range * 100, exp_res)
     fig, ax = plt.subplots(figsize=(7, 6))
+
     sns.lineplot(
         x="criterion",
         y="correlation",

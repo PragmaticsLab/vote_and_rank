@@ -163,8 +163,12 @@ def minimax_election(self, score_type: str = "winning_votes"):
 
 
 def optimality_gap_ranking(self, gamma: int):
-    gap_scores_np = np.minimum(self.table, gamma) - gamma
-    gap_scores = pd.DataFrame(index=self.table.index, columns=self.table.columns, data=gap_scores_np)
+    table = self.table.copy()
+    if self.is_partial:
+        table = table.fillna(table.median())
+
+    gap_scores_np = np.minimum(table, gamma) - gamma
+    gap_scores = pd.DataFrame(index=table.index, columns=table.columns, data=gap_scores_np)
     return (gap_scores * self.weights / self.weights.sum()).sum(axis=1).sort_values(ascending=False)
 
 

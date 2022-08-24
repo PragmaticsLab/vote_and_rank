@@ -13,7 +13,7 @@ ELECTION_METHODS = [
     "optimality_gap",
 ]
 
-PARTIAL_METHODS = ["condorcet", "copeland", "minimax", "mean"]
+PARTIAL_METHODS = ["condorcet", "copeland", "minimax", "mean", "optimality_gap"]
 
 METHODS_SETTINGS = {
     "mean": {"mean_type": ["arithmetic", "geometric"]},
