@@ -134,6 +134,7 @@ def create_exp_pic(exp_range, exp_res, filename=None):
     for line in L.get_lines():
         line.set_linewidth(5.0)
     L.get_texts()[0].set_text("$\\sigma^{am}$")
+    L.get_texts()[3].set_text("$\\sigma^{og}$")
 
     if filename is not None:
         plt.savefig(filename, format="pdf")
