@@ -31,6 +31,43 @@ CS1-CS3 are conducted on the publicly available benchmark leaderboards, while CS
 The leaderboard results by the access date and CS4 experiment results can be found [here](https://github.com/PragmaticsLab/vote_and_rank/tree/main/tables). 
 
 
+### Framework quickstart
+
+1. Vote'n'Rank leaderboard can be initialized from a table of models' performance, where each row corresponds to a model and each column corresponds to a task.
+
+    ```
+    import pandas as pd
+    from votenrank import Leaderboard
+
+    table = pd.DataFrame({"COPA": [70.6, 90.6], "RTE": [71.7, 88.2]}, index=["BERT", "RoBERTa"])
+    lb = Leaderboard(table=table, weights={"COPA": 0.6, "RTE": 0.4})
+    ```
+
+1. You can rank models using various social choice methods, such as Borda or Copeland.
+    ```
+    lb.borda_ranking()
+    ```
+
+1. The same is true for winner selection.
+    ```
+    lb.condorcet_election()
+    ```
+
+1. To test all methods currently supported in the framework, use `lb.rank_all()` and `lb.elect_all()`.
+
+1. For double-stage ranking, use `two_step_ranking` method.
+    ```
+    lb.two_step_ranking(
+        ranking_method="borda",
+        task_groups={"group 1": ["COPA"], "group 2": ["RTE"]}
+    )
+    ```
+
+1. One can search for prospective models (the models which can become Condorcet winners given particular weights).
+    ```
+    lb.split_models_by_feasibility()
+    ```
+
 ### Usage examples
 Conda environment.
 
