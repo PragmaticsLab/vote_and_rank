@@ -24,6 +24,7 @@ We consider four case studies (CSs) on three benchmarks across multiple ML field
 2. ```CS2 - Condorcet Search.ipynb``` -- identifying prosopective and non-prospective models.
 3. ```CS3 - NaN Stability.ipynb``` -- exploring robustness to missing performance scores (replaced with NaNs).
 4. ```CS4 - User-Oriented Setting.ipynb``` -- ranking systems in a simulated practical scenarios according to the following criteria: *performance*, *computational efficiency*, and *fairness*.
+5. ```IIA.ipynb``` -- experiment on the count-based independence of irrelevant alternatives in Case Study 1.
 
 CS1-CS3 are conducted on the publicly available benchmark leaderboards, while CS4 includes additional experiments run on a single GPU unit, NVIDIA A100 80 GB SXM (NVLink), 4-CPU cores, AMD EPYC 7702 2-3.35 GHz, and 1 TB RAM.
 
