@@ -1,6 +1,6 @@
 ## Vote'n'Rank: Revision of Benchmarking with Social Choice Theory
 
-This repository contains the code, experiment results, and other materials used in our submission to the [NeurIPS 2022 Datasets and Benchmarks Track](https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks).
+This repository contains the code, experiment results, and other materials used in our EACL 2023 paper.
 
 
 **Authors**: Mark Rofin, Mikhail Florinskiy, Vladislav Mikhailov, Andrey Kravchenko, Elena Tutubalina, Tatiana Shavrina, Daniel Karabekyan, and Ekaterina Artemova
@@ -93,3 +93,16 @@ There are a few examples of running the CS4 experiments.
 
 ### License
 The codebase and experiment materials are available under the Apache 2.0 license. The copyright of the leaderboard results remains with the original authors and benchmark holders.
+
+
+### Cite us
+The pre-publication version is available at ArXiv.
+
+```
+@article{rofin2022vote,
+  title={Vote'n'Rank: Revision of Benchmarking with Social Choice Theory},
+  author={Rofin, Mark and Mikhailov, Vladislav and Florinskiy, Mikhail and Kravchenko, Andrey and Tutubalina, Elena and Shavrina, Tatiana and Karabekyan, Daniel and Artemova, Ekaterina},
+  journal={arXiv preprint arXiv:2210.05769},
+  year={2022}
+}
+```
