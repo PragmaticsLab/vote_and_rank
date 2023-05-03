@@ -1,6 +1,6 @@
 ## Vote'n'Rank: Revision of Benchmarking with Social Choice Theory
 
-This repository contains the code, experiment results, and other materials used in our EACL 2023 paper.
+This repository contains the code, experiment results, and other materials used in our [EACL 2023 paper](https://aclanthology.org/2023.eacl-main.48/).
 
 
 **Authors**: Mark Rofin, Mikhail Florinskiy, Vladislav Mikhailov, Andrey Kravchenko, Elena Tutubalina, Tatiana Shavrina, Daniel Karabekyan, and Ekaterina Artemova
@@ -96,13 +96,24 @@ The codebase and experiment materials are available under the Apache 2.0 license
 
 
 ### Cite us
-The pre-publication version is available at ArXiv.
-
 ```
-@article{rofin2022vote,
-  title={Vote'n'Rank: Revision of Benchmarking with Social Choice Theory},
-  author={Rofin, Mark and Mikhailov, Vladislav and Florinskiy, Mikhail and Kravchenko, Andrey and Tutubalina, Elena and Shavrina, Tatiana and Karabekyan, Daniel and Artemova, Ekaterina},
-  journal={arXiv preprint arXiv:2210.05769},
-  year={2022}
+@inproceedings{rofin-etal-2023-votenrank,
+    title = "Vote{'}n{'}Rank: Revision of Benchmarking with Social Choice Theory",
+    author = "Rofin, Mark  and
+      Mikhailov, Vladislav  and
+      Florinsky, Mikhail  and
+      Kravchenko, Andrey  and
+      Shavrina, Tatiana  and
+      Tutubalina, Elena  and
+      Karabekyan, Daniel  and
+      Artemova, Ekaterina",
+    booktitle = "Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics",
+    month = may,
+    year = "2023",
+    address = "Dubrovnik, Croatia",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.eacl-main.48",
+    pages = "670--686",
+    abstract = "The development of state-of-the-art systems in different applied areas of machine learning (ML) is driven by benchmarks, which have shaped the paradigm of evaluating generalisation capabilities from multiple perspectives. Although the paradigm is shifting towards more fine-grained evaluation across diverse tasks, the delicate question of how to aggregate the performances has received particular interest in the community. In general, benchmarks follow the unspoken utilitarian principles, where the systems are ranked based on their mean average score over task-specific metrics. Such aggregation procedure has been viewed as a sub-optimal evaluation protocol, which may have created the illusion of progress. This paper proposes Vote{'}n{'}Rank, a framework for ranking systems in multi-task benchmarks under the principles of the social choice theory. We demonstrate that our approach can be efficiently utilised to draw new insights on benchmarking in several ML sub-fields and identify the best-performing systems in research and development case studies. The Vote{'}n{'}Rank{'}s procedures are more robust than the mean average while being able to handle missing performance scores and determine conditions under which the system becomes the winner.",
 }
 ```
